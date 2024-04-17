@@ -1,0 +1,47 @@
+﻿@using DTOs.UserDTOs
+@model UserRegisterDTO
+@{
+    ViewData["Title"] = "Sign Up";
+
+    <title>@ViewData["Title"]</title>
+    }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="~/css/Reguster.css" rel="stylesheet" />
+
+
+   
+
+    <div class="center-div">
+        <div class="card">
+            <div class="card-body p-4 p-lg-5">
+                <h2 class="fw-bold mb-4">Sign up now</h2>
+                <form asp-action="Register" asp-controller="Account" method="post">
+                    <div class="mb-3">
+                        <input asp-for="UserName" class="form-control" placeholder="Full name" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <input asp-for="Email" class="form-control" placeholder="Email address" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <input asp-for="password" type="password" class="form-control" placeholder="Password" />
+                        <span asp-validation-for="password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <input asp-for="PasswordConfirmed" type="password" class="form-control" placeholder="Confirm Password" />
+                        <span asp-validation-for="PasswordConfirmed" class="text-danger"></span>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block mb-3">Sign up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
