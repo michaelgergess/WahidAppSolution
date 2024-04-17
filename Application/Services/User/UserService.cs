@@ -5,7 +5,9 @@ using DTO_s.ViewResult;
 using DTOs.UserDTOs;
 using Microsoft.AspNetCore.Identity;
 using Model;
+
 using System;
+using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -130,7 +132,7 @@ namespace Application.Service.User
         }
         public async Task<ResultView<BlockUserDTO>> BlockOrUnBlockUser(BlockUserDTO blockUserDTO)
         {
-            var user = await _UserManager.FindByIdAsync(blockUserDTO.Id);
+            var user = await _UserManager.FindByNameAsync(blockUserDTO.Name);
 
             if (user is null)
             {
@@ -159,13 +161,19 @@ namespace Application.Service.User
             return new ResultView<BlockUserDTO> { Entity = null, IsSuccess = false, Message = "Failed to update user." };
 
         }
-
+        
         public async Task<ResultView<List<GetAllUserDTO>>> GetAllUsers()
         {
-            var users = _UserManager.Users;
+
+            var users = _UserManager.Users.ToList();
+
+            var userRole = _roleManager.Roles.SingleOrDefault(r => r.Name == "user");
+
+            var usersInUserRole = users.Where(u => _UserManager.IsInRoleAsync(u, userRole.Name).Result);
 
 
-            if (users == null)
+
+            if (usersInUserRole == null)
             {
                 return new ResultView<List<GetAllUserDTO>>
                 {
@@ -174,7 +182,7 @@ namespace Application.Service.User
                     Message = "No users found."
                 };
             }
-            var userlist =  users.ToList();
+            var userlist = usersInUserRole.ToList();
             var userDTOs = _mapper.Map<List<GetAllUserDTO>>(userlist);
 
             return new ResultView<List<GetAllUserDTO>>

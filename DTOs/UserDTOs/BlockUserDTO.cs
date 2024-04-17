@@ -12,7 +12,7 @@ namespace DTOs.UserDTOs
     public class BlockUserDTO
     {
         [Required(ErrorMessage = "Field can't be empty")]
-        public string Id { get; set; }
+        public string Name { get; set; }
         [Required]
         public bool IsBlocked { get; set; }
       

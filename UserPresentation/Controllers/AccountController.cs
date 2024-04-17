@@ -1,6 +1,7 @@
 ﻿using Application.Contract;
 using Application.Service.User;
 using DTOs.UserDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -94,7 +95,7 @@ namespace UserPresentation.Controllers
             return Json(false);
 
         }
-        public async Task<IActionResult> CheckEmail2(string Email)
+        public async Task<IActionResult> CheckEmail1(string Email)
         {
             var user = await _userManager.FindByEmailAsync(Email);
             if (user == null)
@@ -105,6 +106,32 @@ namespace UserPresentation.Controllers
             return Json(false);
 
         }
-      
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+           var res =await _userService.GetAllUsers();
+            return View(res.Entity);
+        }
+       
+        [HttpPost]
+        [Authorize(Roles ="admin")]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> ToggleBlockStatus(string UserName)
+        {
+            BlockUserDTO blockUserDTO = new BlockUserDTO();
+            blockUserDTO.Name = UserName;
+            var user = await _userManager.FindByNameAsync(UserName);
+            if (user.IsBlocked is false) {
+                blockUserDTO.IsBlocked = true;
+            }
+            else {
+                blockUserDTO.IsBlocked = false;
+            }
+
+            await _userService.BlockOrUnBlockUser(blockUserDTO);
+            return RedirectToAction("GetAllUsers");
+        }
+
     }
 }

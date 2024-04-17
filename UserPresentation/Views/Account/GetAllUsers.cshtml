@@ -1,0 +1,50 @@
+﻿@model List<DTOs.UserDTOs.GetAllUserDTO>
+
+@{
+    ViewData["Title"] = "ManagmentUsers";
+}
+
+<h1>GetAllUsers</h1>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>UserName</th>
+                <th>Email</th>
+                <th>Is Blocked</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@(user.IsBlocked ? "Yes" : "No")</td>
+                    <td>
+                        <form asp-action="ToggleBlockStatus" method="post">
+                            <input type="hidden" name="UserName" value="@user.UserName" />
+                            <button type="submit" class="btn btn-sm btn-@(user.IsBlocked ? "success" : "danger")">
+                                @if (user.IsBlocked)
+                                {
+                                    <text>Unblock</text>
+                                }
+                                else
+                                {
+                                    <text>Block</text>
+                                }
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No users found.</p>
+}
