@@ -114,7 +114,6 @@ namespace Application.Service.User
                 GetAllUserDTO userObj = new GetAllUserDTO()
                 {
                     Email = userDto.Email,
-                    Id = oldUser.Id,
                     IsBlocked = oldUser.IsBlocked,
                     UserName = oldUser.UserName
                 };

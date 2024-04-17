@@ -11,12 +11,8 @@ namespace DTOs.UserDTOs
     [NotMapped]
     public class GetAllUserDTO
     {
-       
-        public string Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public bool IsBlocked { get; set; }
-        public string Role { get; set; }
-
     }
 }
