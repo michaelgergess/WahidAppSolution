@@ -34,28 +34,22 @@ namespace UserPresentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginDTO loginDTO)
         {
-            var user = await _userManager.FindByEmailAsync(loginDTO.Email);
-            if (user == null)
-            {
-                ModelState.AddModelError("", "User not found."); 
-                return View(loginDTO);
-            }
-
-            if (!await _userManager.CheckPasswordAsync(user, loginDTO.password))
-            {
-                ModelState.AddModelError("", "Invalid password."); 
-                return View(loginDTO);
-            }
+           
+          
 
             if (ModelState.IsValid)
             {
-                var result = await _userService.LoginAsync(loginDTO);
 
-                return View();
+                var result = await _userService.LoginAsync(loginDTO);
+                if (result.IsSuccess == true)
+                {
+                    return View();
+                }
+                ModelState.AddModelError("", result.Message); // Add custom error message for general validation errors
+                return View(loginDTO);
             }
             else
             {
-                ModelState.AddModelError("", "Password or Email Not Correct"); // Add custom error message for general validation errors
                 return View(loginDTO);
             }
         }
@@ -72,12 +66,21 @@ namespace UserPresentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _userService.Registration(registerDTO, "admin");
-                return RedirectToAction("Login", new UserLoginDTO { Email = registerDTO.Email,password = registerDTO.password});
+                var result = await _userService.Registration(registerDTO, "user");
+                if (result.IsSuccess is true)
+                {
+                    return RedirectToAction("Login", new UserLoginDTO { Email = registerDTO.Email, password = registerDTO.password });
+                }
+                else
+                {
+                    ModelState.AddModelError("", result.Message); // Add custom error message for general validation errors
+                    return View(registerDTO);
+                }
+                        
             }
             else
             {
-                return BadRequest(ModelState);
+                return View(ModelState);
             }
         }
         public async Task<IActionResult> logOut()
@@ -86,26 +89,7 @@ namespace UserPresentation.Controllers
             return View("Login");
         }
        
-        public async Task<IActionResult> CheckUserName(string UserName) {
-            var user = await _userManager.FindByNameAsync(UserName);
-          if (user == null) {
-                return Json(true);
-            }
-           
-            return Json(false);
-
-        }
-        public async Task<IActionResult> CheckEmail1(string Email)
-        {
-            var user = await _userManager.FindByEmailAsync(Email);
-            if (user == null)
-            {
-                return Json(true);
-            }
-
-            return Json(false);
-
-        }
+       
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -131,6 +115,28 @@ namespace UserPresentation.Controllers
 
             await _userService.BlockOrUnBlockUser(blockUserDTO);
             return RedirectToAction("GetAllUsers");
+        }
+        public async Task<IActionResult> CheckUserName(string UserName)
+        {
+            var user = await _userManager.FindByNameAsync(UserName);
+            if (user == null)
+            {
+                return Json(true);
+            }
+
+            return Json(false);
+
+        }
+        public async Task<IActionResult> CheckEmail(string Email)
+        {
+            var user = await _userManager.FindByEmailAsync(Email);
+            if (user == null)
+            {
+                return Json(true);
+            }
+
+            return Json(false);
+
         }
 
     }

@@ -44,7 +44,7 @@ namespace Application.Service.User
             }
 
         }
-        public async Task<ResultView<UserRegisterDTO>> Registration(UserRegisterDTO account, string? RoleName = "admin")
+        public async Task<ResultView<UserRegisterDTO>> Registration(UserRegisterDTO account, string? RoleName = "user")
         {
 
             var existUserEmail = await _UserManager.FindByEmailAsync(account.Email);
@@ -79,7 +79,7 @@ namespace Application.Service.User
 
             if (RoleName.ToLower() == "user")
             {
-                await _UserManager.AddToRoleAsync(userModel, "admin");
+                await _UserManager.AddToRoleAsync(userModel, "user");
             }
            
 

@@ -16,7 +16,10 @@
             <div class="card-body p-4 p-lg-5">
                 <h2 class="fw-bold mb-4">Sign up now</h2>
                 <form asp-action="Register" asp-controller="Account" method="post">
+
                     <div class="mb-3">
+                    <!-- Display validation summary -->
+                    <div asp-validation-summary="All" class="text-danger"></div>
                         <input asp-for="UserName" class="form-control" placeholder="Full name" />
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>

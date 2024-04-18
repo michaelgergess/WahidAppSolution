@@ -42,11 +42,7 @@
                         </div>
                         <!-- Display validation summary -->
                         <div asp-validation-summary="All" class="text-danger"></div>
-                        <!-- Display custom error message -->
-                        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-                        {
-                            <div class="text-danger">@ViewBag.ErrorMessage</div>
-                        }
+                       
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <input asp-for="Email" class="form-control form-control-lg" required>

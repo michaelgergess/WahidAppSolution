@@ -12,7 +12,7 @@ namespace DTOs.UserDTOs
 
         [Required(ErrorMessage = "Email address is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
-        [Remote(action:"CheckEmail", controller: "Account", ErrorMessage = "Email Already Exist")]
+        [Remote(action: "CheckEmail", controller: "Account", ErrorMessage = "Email Already Exist")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
