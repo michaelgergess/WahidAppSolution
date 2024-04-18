@@ -1,0 +1,39 @@
+﻿@using DTOs.ArticleDTOs
+@model IEnumerable<GetArticlesForAdmin>
+
+@{
+    ViewData["Title"] = "Admin Articles";
+}
+
+<div>
+    <h1>Admin Articles</h1>
+    <a asp-action="Create" class="btn btn-primary">Create Article</a>
+
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var article in Model)
+                {
+                    <tr>
+                        <td>@article.Title</td>
+                        <td>
+                            <a asp-action="ConfirmDelete" asp-route-id="@article.Id" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No articles available.</p>
+    }
+
+</div>

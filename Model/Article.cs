@@ -11,7 +11,7 @@ namespace Model
         public byte[]? Image { get; set; }
 
         [ForeignKey("User")]
-        public string AdminName { get; set; }
+        public string AdminId { get; set; }
         public AppUser User { get; set; }
 
         public ICollection<ReportArticle> ReportArticle { get; set; }

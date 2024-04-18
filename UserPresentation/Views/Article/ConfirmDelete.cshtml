@@ -1,0 +1,22 @@
+﻿@using DTOs.ArticleDTOs
+@model GetArticlesForAdmin
+
+
+@{
+    ViewData["Title"] = "ConfirmDelete";
+}
+
+
+@{
+    ViewData["Title"] = "Confirm Delete";
+}
+
+<h1>Confirm Delete</h1>
+
+<p>Are you sure you want to delete the article titled "<strong>@Model.Title</strong>"?</p>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
