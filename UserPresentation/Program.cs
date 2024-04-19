@@ -19,7 +19,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddScoped<IuserService, UserService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
-
+builder.Services.AddScoped<IReportArticleRepository, ReportArticleRepository>();
 
 // Register AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile)); // Register the AutoMapperProfile

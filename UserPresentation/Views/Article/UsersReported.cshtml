@@ -1,0 +1,55 @@
+﻿@using DTOs.ArticleDTOs
+@model ReportedArticle
+
+@{
+    ViewData["Title"] = "Reported Article";
+}
+
+<div>
+    <h1>Reported Article</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Reported Users</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Title</td>
+                <td>
+
+                    <ul class="user-list">
+                        @foreach (var user in Model.UserNameAndEmailOfUserDto)
+                        {
+                            <li class="user-info">
+                                <span class="username">@user.UserName</span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span class="email">  @user.Email</span>
+                            </li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .user-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .username {
+        font-weight: bold;
+    }
+
+    .email {
+        color: #666;
+    }
+
+   
+</style>

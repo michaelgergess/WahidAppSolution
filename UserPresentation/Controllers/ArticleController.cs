@@ -2,6 +2,7 @@
 using Application.Services.Article;
 using DTOs.ArticleDTOs;
 using DTOs.UserDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Model;
 
 namespace UserPresentation.Controllers
 {
+    [Authorize]
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -32,6 +34,18 @@ namespace UserPresentation.Controllers
             var res = await _articleService.GetArticlesForUser(PageNumber, pageSize);
             return View(res);
         }
+        public async Task<JsonResult> SendReport(string articleTitle)
+        {
+            string UserName = User.Identity.Name;
+            var res = await _articleService.CreateReport(articleTitle, UserName);
+            return Json(res);
+        }
+        public async Task<ActionResult> UsersReported(int articleId)
+        {
+            var res = await _articleService.GetAllReportBy(articleId);
+            return View(res);
+        }
+
         // GET: ArticleController/Details/5
         public ActionResult Details(int id)
         {
@@ -81,7 +95,6 @@ namespace UserPresentation.Controllers
             return NotFound();
         }
 
-        // POST: Article/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -95,7 +108,7 @@ namespace UserPresentation.Controllers
             return RedirectToAction(nameof(Index));
         }
     
-    public async Task<IActionResult> CheckTitle(string title)
+        public async Task<IActionResult> CheckTitle(string title)
         {
             bool exist = await _articleService.TitleIsExist(title);
             return Json(!exist);

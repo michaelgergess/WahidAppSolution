@@ -43,7 +43,8 @@ namespace UserPresentation.Controllers
                 var result = await _userService.LoginAsync(loginDTO);
                 if (result.IsSuccess == true)
                 {
-                    return View();
+                    return RedirectToAction("IndexUser", "Article");
+
                 }
                 ModelState.AddModelError("", result.Message); // Add custom error message for general validation errors
                 return View(loginDTO);

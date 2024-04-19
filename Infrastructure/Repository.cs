@@ -26,7 +26,7 @@ namespace Infrastructure
         }
         public Task<IQueryable<TEntity>> GetAllAsync()
         {
-            return Task.FromResult(_Dbset.Select(s => s));
+            return Task.FromResult(_Dbset.Select(s => s).AsNoTracking());
         }
         public async Task<TEntity> GetByIdAsync(Tid id)
         {

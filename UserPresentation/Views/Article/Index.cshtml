@@ -16,6 +16,8 @@
                 <tr>
                     <th>Title</th>
                     <th>Action</th>
+                    <th>Reports</th> <!-- New column for Reports -->
+
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +27,12 @@
                         <td>@article.Title</td>
                         <td>
                             <a asp-action="ConfirmDelete" asp-route-id="@article.Id" class="btn btn-danger">Delete</a>
+                        </td>
+                        <td>
+                            @if (article.reportArticles.Count > 0)
+                            {
+                                <a asp-action="UsersReported" asp-route-articleId="@article.Id" class="btn btn-warning">View Reports</a>
+                            }
                         </td>
                     </tr>
                 }

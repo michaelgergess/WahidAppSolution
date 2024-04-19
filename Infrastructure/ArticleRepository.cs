@@ -1,8 +1,10 @@
 ﻿using Application.Contract;
+using Application.Services.Article;
 using Context;
 using DTOs.ArticleDTOs;
 using DTOs.UserDTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -16,19 +18,22 @@ namespace Infrastructure
     public class ArticleRepository :Repository<Article, int>, IArticleRepository
     {
         private readonly ApplicationDbContext _context;
+
         public ArticleRepository(ApplicationDbContext Context) : base(Context)
         {
             _context = Context;
         }
         public async Task<List<GetArticlesForAdmin>> GetAllArticles()
         {
-            var res = await _context.Articles.AsNoTracking().ToListAsync();
+            var res = await _context.Articles.Include(i=>i.ReportArticle).AsNoTracking().ToListAsync();
             List<GetArticlesForAdmin> result = new List<GetArticlesForAdmin>();
             foreach (var article in res)
             {
-                var articl = new GetArticlesForAdmin () {
+                var articl = new GetArticlesForAdmin()
+                {
                     Id = article.Id,
-                    Title = article.Title
+                    Title = article.Title,
+                    reportArticles = article.ReportArticle
                 };
                 result.Add(articl);
             }
@@ -39,9 +44,9 @@ namespace Infrastructure
             var article = await _context.Articles.FindAsync(id);
    
         }
-        public async Task< IQueryable<GetArticlesForUser>> GetAllArticlesForUsers()
+        public async Task<IQueryable<GetArticlesForUser>> GetAllArticlesForUsers()
         {
-            var articles =  _context.Articles
+            var articles = _context.Articles.AsNoTracking()
                                    .Select(article => new GetArticlesForUser
                                    {
                                        Description = article.Description,

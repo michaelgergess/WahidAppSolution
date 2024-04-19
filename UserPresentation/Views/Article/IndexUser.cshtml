@@ -113,6 +113,23 @@
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Yes, report it',
             cancelButtonText: 'Cancel'
+        }).then((result) => {
+            // Check if user confirmed the report
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Article/SendReport', 
+                    data: { articleTitle: articleTitle },
+                    success: function (response) {
+                        alert(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response if needed
+                        alert('Error reporting article: ' + error);
+                    }
+                });
+            } 
         });
     }
 </script>
+

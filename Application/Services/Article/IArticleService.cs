@@ -13,5 +13,7 @@ namespace Application.Services.Article
         Task<bool> DeleteArticleAsync(int id);
         Task<GetArticlesForAdmin> ConfrimationForDeleteAsync(int id);
         Task<PaginatedList<GetArticlesForUser>> GetArticlesForUser(int PageNumber, int PageSize);
-    }
+        Task<string> CreateReport(string articleTitle, string userName);
+        Task<ReportedArticle> GetAllReportBy(int articleId);
+            }
 }
