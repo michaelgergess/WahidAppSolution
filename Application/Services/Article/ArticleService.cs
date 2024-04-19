@@ -1,7 +1,9 @@
 ﻿
 using Application.Contract;
+using AutoMapper;
 using DTO_s.ViewResult;
 using DTOs.ArticleDTOs;
+using DTOs.Paginated;
 using Microsoft.AspNetCore.Identity;
 using Model;
 using System.Linq;
@@ -14,11 +16,13 @@ namespace Application.Services.Article
     {
         private readonly IArticleRepository _articleRepository;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public ArticleService(IArticleRepository articleRepository, UserManager<AppUser> userManager)
+        public ArticleService(IArticleRepository articleRepository, UserManager<AppUser> userManager, IMapper mapper)
         {
             _articleRepository = articleRepository;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         public async Task<ResultView<ArticleDTO>> Create(ArticleDTO articleDTO)
@@ -84,6 +88,14 @@ namespace Application.Services.Article
                 return new GetArticlesForAdmin { Id =  article.Id ,Title = article.Title};
             }
           return null;
+        }
+        public async Task<PaginatedList<GetArticlesForUser>> GetArticlesForUser(int PageNumber, int PageSize)
+        {
+            var articles = await _articleRepository.GetAllArticlesForUsers();
+
+            var paginatedArticles = await PaginatedList<GetArticlesForUser>.CreateAsync(articles, PageNumber, PageSize);
+
+            return paginatedArticles;
         }
 
 

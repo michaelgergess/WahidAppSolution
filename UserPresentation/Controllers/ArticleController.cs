@@ -26,7 +26,12 @@ namespace UserPresentation.Controllers
             var res = await _articleService.GetAllArticlesForAdmin();
             return View(res);
         }
-
+        public async Task<ActionResult> IndexUser(int PageNumber=1)
+        {
+            const int pageSize = 9;
+            var res = await _articleService.GetArticlesForUser(PageNumber, pageSize);
+            return View(res);
+        }
         // GET: ArticleController/Details/5
         public ActionResult Details(int id)
         {
@@ -61,26 +66,8 @@ namespace UserPresentation.Controllers
             }
         }
 
-        // GET: ArticleController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ArticleController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+      
+      
 
         // GET: ArticleController/Delete/5
         public async Task<IActionResult> ConfirmDelete(int id)

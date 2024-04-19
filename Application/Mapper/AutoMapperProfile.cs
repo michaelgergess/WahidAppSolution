@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-
+using DTOs.ArticleDTOs;
+using DTOs.Paginated;
 using DTOs.UserDTOs;
 using Microsoft.AspNetCore.Identity;
 
@@ -19,11 +20,14 @@ namespace Application.Mapper
             CreateMap<UserRegisterDTO, AppUser>().ReverseMap();
 
             CreateMap<GetAllUserDTO, AppUser>().ReverseMap();
-           
+            CreateMap<Article, GetArticlesForUser>().ReverseMap();
 
 
 
-           
+
+
+
+
 
 
         }

@@ -1,0 +1,118 @@
+﻿@using DTOs.Paginated
+@model PaginatedList<DTOs.ArticleDTOs.GetArticlesForUser>
+
+@{
+    ViewData["Title"] = "IndexUser";
+}
+
+<!-- Include SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+
+<style>
+    /* Add custom CSS for spacing */
+    .container {
+        margin-top: 100px; /* Adjust as needed */
+        margin-bottom: 50px; /* Adjust as needed */
+    }
+
+    .card {
+        margin-bottom: 20px; /* Adjust as needed */
+    }
+
+    .card-footer {
+        padding-top: 10px; /* Adjust as needed */
+        padding-bottom: 10px; /* Adjust as needed */
+    }
+</style>
+
+<div class="container mt-5 mb-5"> <!-- Added mb-5 for bottom margin -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var article in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-primary">
+                        <a href="@article.Link" target="_blank">
+                            @if (article.Image != null && article.Image.Length > 0)
+                            {
+                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(article.Image)" class="card-img-top" alt="Article Image">
+                            }
+                            else
+                            {
+                                <div class="card-img-top no-image">No Image Available</div>
+                            }
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">@article.Title</h5>
+                            <p class="card-text">@article.Description</p>
+                        </div>
+
+                        <div class="card-footer">
+                            <a href="@article.Link" class="btn btn-primary btn-block" target="_blank">Read Article</a>
+                            <button type="button" class="btn btn-danger btn-block" onclick="reportArticle('@article.Title')">Report</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+            <!-- Pagination -->
+        @if (Model != null && Model.Any())
+        {
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    @if (Model.PreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?pageNumber=@(Model.PageIndex - 1)" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    }
+                    @for (var i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                            <a class="page-link" href="?pageNumber=@i">@i</a>
+                        </li>
+                    }
+                    @if (Model.NextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?pageNumber=@(Model.PageIndex + 1)" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            No articles found.
+        </div>
+    }
+</div>
+
+<!-- Include SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- JavaScript function to handle reporting article -->
+<script>
+    function reportArticle(articleTitle) {
+        // Display a confirmation alert for reporting
+        Swal.fire({
+            icon: 'warning',
+            title: 'Report Article',
+            text: 'Are you sure you want to report this article: ' + articleTitle + '?',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, report it',
+            cancelButtonText: 'Cancel'
+        });
+    }
+</script>

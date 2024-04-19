@@ -15,7 +15,7 @@ namespace Application.Contract
     {
 
         Task<List<GetArticlesForAdmin>> GetAllArticles();
-
+        Task<IQueryable<GetArticlesForUser>> GetAllArticlesForUsers();
 
 
 

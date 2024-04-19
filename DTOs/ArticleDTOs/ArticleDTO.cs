@@ -11,6 +11,7 @@ namespace DTOs.ArticleDTOs
 {
     public class ArticleDTO
     {
+        [RegularExpression(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$", ErrorMessage = "Invalid URL")]
         public string? Link { get; set; }
         [Required]
         [Remote(action: "CheckTitle", controller: "Article", ErrorMessage = "Title Already Exist")]

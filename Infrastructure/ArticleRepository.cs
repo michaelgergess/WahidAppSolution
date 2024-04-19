@@ -39,6 +39,19 @@ namespace Infrastructure
             var article = await _context.Articles.FindAsync(id);
    
         }
+        public async Task< IQueryable<GetArticlesForUser>> GetAllArticlesForUsers()
+        {
+            var articles =  _context.Articles
+                                   .Select(article => new GetArticlesForUser
+                                   {
+                                       Description = article.Description,
+                                       Image = article.Image,
+                                       Link = article.Link,
+                                       Title = article.Title
+                                   });
+
+            return  articles;
+        }
 
     }
 }
