@@ -87,7 +87,7 @@ namespace UserPresentation.Controllers
         public async Task<IActionResult> logOut()
         {
           await _userService.LogoutUser();
-            return View("Login");
+            return RedirectToAction("Login");
         }
        
        

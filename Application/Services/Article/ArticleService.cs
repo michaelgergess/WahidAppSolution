@@ -119,7 +119,7 @@ namespace Application.Services.Article
                     User = user
                 };
 
-                await _reportArticleRepository.CreateAsync(reportArticle);
+            await _reportArticleRepository.CreateAsync(reportArticle);
                 await _reportArticleRepository.SaveChangesAsync();
                 return "Reported successfully";
             }

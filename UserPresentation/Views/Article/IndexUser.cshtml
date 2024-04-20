@@ -114,7 +114,6 @@
             confirmButtonText: 'Yes, report it',
             cancelButtonText: 'Cancel'
         }).then((result) => {
-            // Check if user confirmed the report
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'POST',
@@ -124,7 +123,6 @@
                         alert(response);
                     },
                     error: function (xhr, status, error) {
-                        // Handle error response if needed
                         alert('Error reporting article: ' + error);
                     }
                 });
