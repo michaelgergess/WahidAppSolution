@@ -1,12 +1,17 @@
 ﻿using Application.Contract;
 using Application.Service.User;
+using Application.Services.WorldChat;
+using DTOs.ChatDTOs;
 using DTOs.UserDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.SignalR;
 using Model;
 using System.Configuration;
+using System.Security.Claims;
+using UserPresentation.Hubs;
 
 namespace UserPresentation.Controllers
 {
@@ -17,12 +22,31 @@ namespace UserPresentation.Controllers
         private readonly IuserService _userService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IWorlChatService _worldChatService;
+        IHubContext<ChatHub> _hubContext;
 
-        public AccountController(IuserService userService, UserManager<AppUser> userManager, IConfiguration configuration)
+        public AccountController(IuserService userService, UserManager<AppUser> userManager, IConfiguration configuration, IWorlChatService worldChatService, IHubContext<ChatHub> hubContext)
         {
             _userService = userService;
             _userManager = userManager;
             _configuration = configuration;
+            _worldChatService = worldChatService;
+            _hubContext = hubContext;
+        }
+        [Authorize]
+
+        public async Task<IActionResult> ChatPage()
+        {
+            
+            return View();
+
+        }
+       
+        public async Task<JsonResult> GetAllMessages()
+            {
+            var res =await _worldChatService.GetAll();
+            return Json(res);
+
         }
 
         public async Task<IActionResult> Login()

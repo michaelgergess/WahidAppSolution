@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DTOs.ArticleDTOs;
+using DTOs.ChatDTOs;
 using DTOs.Paginated;
 using DTOs.UserDTOs;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,7 @@ namespace Application.Mapper
 
             CreateMap<GetAllUserDTO, AppUser>().ReverseMap();
             CreateMap<Article, GetArticlesForUser>().ReverseMap();
+            CreateMap<ChatDTO, WorldChat>().ReverseMap();
 
 
 

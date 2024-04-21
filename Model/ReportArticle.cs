@@ -6,7 +6,7 @@ namespace Model
     {
 
         [ForeignKey("User")]
-        public string UserName { get; set; }
+        public string UserId{ get; set; }
         public AppUser User { get; set; }
 
         [ForeignKey("Article")]

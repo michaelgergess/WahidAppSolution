@@ -9,6 +9,9 @@ using Model;
 using Application.Mapper;
 using Application.Services.Article;
 using Infrastructure;
+using Microsoft.Data.SqlClient;
+using UserPresentation.Hubs;
+using Application.Services.WorldChat;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +19,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie();
+//SignalR
+builder.Services.AddSignalR();
 builder.Services.AddScoped<IuserService, UserService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IReportArticleRepository, ReportArticleRepository>();
+builder.Services.AddScoped<IWorlChatService, WorlChatService>();
+builder.Services.AddScoped<IWorldChatRepository, WorldChatRepository>();
+
 
 // Register AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile)); // Register the AutoMapperProfile
@@ -28,7 +36,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<A
 builder.Services.AddDbContext<ApplicationDbContext>(op =>
 {
     op.UseSqlServer(builder.Configuration.GetConnectionString("LiveChat"));
-});
+}, ServiceLifetime.Scoped);
 builder.Services.AddSession();
 
 var app = builder.Build();
@@ -48,7 +56,7 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
-
+app.MapHub<ChatHub>("/Chat");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");

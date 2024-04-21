@@ -135,7 +135,7 @@ namespace Application.Services.Article
                 List<UserNameAndEmailOfUserDto> res = new List<UserNameAndEmailOfUserDto>();
                 foreach (var report in reportedByArticle)
                 {
-                    var userlop = await _userManager.FindByIdAsync(report.UserName);
+                    var userlop = await _userManager.FindByIdAsync(report.UserId);
                   
                     var x = new UserNameAndEmailOfUserDto()
                     {
